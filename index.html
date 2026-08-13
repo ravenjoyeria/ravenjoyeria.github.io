@@ -3,213 +3,380 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mi Catálogo de Joyas de Lujo</title>
-    <!-- Estilos Elegantes -->
+    <title>RAVEN Joyería | Catálogo Exclusivo</title>
+    <!-- Tipografías elegantes -->
+    <link rel="preconnect" href="https://googleapis.com">
+    <link rel="preconnect" href="https://gstatic.com" crossorigin>
+    <link href="https://googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+    
     <style>
         :root {
             --color-oro: #d4af37;
-            --color-oscuro: #1a1a1a;
-            --color-gris: #f9f9f9;
+            --color-oro-oscuro: #aa8416;
+            --color-oscuro: #111111;
+            --color-gris-fondo: #f8f9fa;
+            --color-texto: #222222;
         }
 
         body {
-            font-family: 'Playfair Display', Georgia, serif;
+            font-family: 'Montserrat', sans-serif;
             margin: 0;
             padding: 0;
-            background-color: var(--color-gris);
-            color: var(--color-oscuro);
+            background-color: var(--color-gris-fondo);
+            color: var(--color-texto);
         }
 
+        /* Encabezado Principal */
         header {
             background-color: var(--color-oscuro);
             color: white;
             text-align: center;
-            padding: 2.5rem 1rem;
-            border-bottom: 3px solid var(--color-oro);
+            padding: 2.5rem 1rem 1.5rem 1rem;
+            border-bottom: 1px solid rgba(214, 175, 55, 0.3);
         }
 
         header h1 {
+            font-family: 'Cormorant Garamond', serif;
             margin: 0;
-            font-size: 2.5rem;
-            letter-spacing: 2px;
+            font-size: 3rem;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: #ffffff;
         }
 
         header p {
             margin: 0.5rem 0 0;
-            font-size: 1rem;
+            font-size: 0.9rem;
             color: var(--color-oro);
-            font-style: italic;
+            letter-spacing: 2px;
+            text-transform: uppercase;
         }
 
+        /* Menú de Navegación por Categorías (Idéntico a tu Google Sites) */
+        nav {
+            background-color: var(--color-oscuro);
+            border-bottom: 2px solid var(--color-oro);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            overflow-x: auto;
+            white-space: nowrap;
+            scrollbar-width: none; /* Ocultar barra en Firefox */
+        }
+
+        nav::-webkit-scrollbar {
+            display: none; /* Ocultar barra en Chrome/Safari */
+        }
+
+        .menu-container {
+            display: flex;
+            justify-content: start;
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 0 10px;
+        }
+
+        .menu-btn {
+            background: none;
+            border: none;
+            color: #cccccc;
+            padding: 15px 20px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-bottom: 3px solid transparent;
+        }
+
+        .menu-btn:hover {
+            color: var(--color-oro);
+        }
+
+        .menu-btn.active {
+            color: var(--color-oro);
+            border-bottom: 3px solid var(--color-oro);
+            background-color: rgba(255, 255, 255, 0.03);
+        }
+
+        /* Contenedor del Catálogo */
         .container {
-            max-width: 1200px;
-            margin: 2rem auto;
-            padding: 0 1rem;
+            max-width: 1300px;
+            margin: 2.5rem auto;
+            padding: 0 1.5rem;
         }
 
-        /* Grid del catálogo */
         .catalogo-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 2rem;
+            gap: 30px;
         }
 
-        /* Tarjeta de Joya */
+        /* Tarjetas de Joyas */
         .joya-card {
             background: white;
-            border-radius: 4px;
+            border-radius: 0px; /* Bordes rectos para un look refinado */
             overflow: hidden;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-            transition: transform 0.3s ease;
-            border: 1px solid #eee;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.02);
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            border: 1px solid #eaeaea;
             display: flex;
             flex-direction: column;
         }
 
         .joya-card:hover {
-            transform: translateY(-5px);
+            transform: translateY(-8px);
+            box-shadow: 0 15px 35px rgba(214, 175, 55, 0.12);
+            border-color: var(--color-oro);
         }
 
         .joya-img-container {
             width: 100%;
-            height: 300px;
+            height: 320px;
             overflow: hidden;
-            background-color: #fff;
+            background-color: #ffffff;
         }
 
         .joya-img {
             width: 100%;
             height: 100%;
             object-fit: cover;
+            transition: transform 0.6s ease;
+        }
+
+        .joya-card:hover .joya-img {
+            transform: scale(1.05);
         }
 
         .joya-info {
-            padding: 1.5rem;
+            padding: 20px;
             display: flex;
             flex-direction: column;
             flex-grow: 1;
         }
 
         .joya-categoria {
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             text-transform: uppercase;
-            letter-spacing: 1px;
-            color: #777;
-            margin-bottom: 0.5rem;
-        }
-
-        .joya-nombre {
-            font-size: 1.25rem;
-            margin: 0 0 0.5rem 0;
+            letter-spacing: 2px;
+            color: #888;
+            margin-bottom: 8px;
             font-weight: 600;
         }
 
+        .joya-nombre {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.4rem;
+            margin: 0 0 8px 0;
+            font-weight: 600;
+            color: var(--color-oscuro);
+            line-height: 1.2;
+        }
+
         .joya-material {
-            font-size: 0.85rem;
-            color: #555;
-            margin-bottom: 1rem;
-            font-style: italic;
+            font-size: 0.8rem;
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .joya-compra-bloque {
+            margin-top: auto;
+            border-top: 1px solid #f5f5f5;
+            padding-top: 15px;
         }
 
         .joya-precio {
             font-size: 1.4rem;
             color: var(--color-oscuro);
-            font-weight: bold;
-            margin-top: auto;
-            border-top: 1px solid #eee;
-            padding-top: 1rem;
+            font-weight: 600;
+            margin-bottom: 12px;
+            display: block;
+        }
+
+        /* Botón de WhatsApp */
+        .btn-whatsapp {
             display: flex;
-            justify-content: space-between;
             align-items: center;
+            justify-content: center;
+            gap: 8px;
+            background-color: var(--color-oscuro);
+            color: white;
+            text-decoration: none;
+            padding: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+            border: 1px solid var(--color-oscuro);
         }
 
-        .joya-precio span {
-            color: var(--color-oro);
+        .btn-whatsapp:hover {
+            background-color: transparent;
+            color: var(--color-oscuro);
+            border-color: var(--color-oscuro);
         }
 
-        .agotado {
-            font-size: 0.8rem;
-            background: #ffeded;
-            color: #c92a2a;
-            padding: 0.2rem 0.6rem;
-            border-radius: 3px;
+        .agotado-tag {
+            font-size: 0.75rem;
+            background: #fdf2f2;
+            color: #ec5959;
+            padding: 12px;
+            text-align: center;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .loading-text {
+            text-align: center;
+            font-family: 'Cormorant Garamond', serif;
+            font-style: italic;
+            font-size: 1.6rem;
+            padding: 80px 0;
+            color: #888;
+            grid-column: 1 / -1;
         }
     </style>
 </head>
 <body>
 
+    <!-- Encabezado de Marca -->
     <header>
-        <h1>Alta Joyería</h1>
+        <h1>RAVEN Joyería</h1>
         <p>Catálogo Exclusivo de Piezas Únicas</p>
     </header>
 
+    <!-- Menú Dinámico con tus Secciones Reales de Google Sites -->
+    <nav>
+        <div class="menu-container">
+            <button class="menu-btn active" onclick="filtrarCategoria('todo')">Ver Todo</button>
+            <button class="menu-btn" onclick="filtrarCategoria('Cadenas Hombre')">Cadenas Hombre</button>
+            <button class="menu-btn" onclick="filtrarCategoria('Cadena Dama')">Cadena Dama</button>
+            <button class="menu-btn" onclick="filtrarCategoria('Manillas')">Manillas</button>
+            <button class="menu-btn" onclick="filtrarCategoria('Esclavas')">Esclavas</button>
+            <button class="menu-btn" onclick="filtrarCategoria('Anillos Dama')">Anillos Dama</button>
+            <button class="menu-btn" onclick="filtrarCategoria('Anillos Hombre')">Anillos Hombre</button>
+            <button class="menu-btn" onclick="filtrarCategoria('Argollas')">Argollas</button>
+            <button class="menu-btn" onclick="filtrarCategoria('Aretes')">Aretes</button>
+            <button class="menu-btn" onclick="filtrarCategoria('Topos')">Topos</button>
+            <button class="menu-btn" onclick="filtrarCategoria('Tobilleras')">Tobilleras</button>
+            <button class="menu-btn" onclick="filtrarCategoria('Dijes')">Dijes</button>
+            <button class="menu-btn" onclick="filtrarCategoria('Relojes')">Relojes</button>
+        </div>
+    </nav>
+
     <div class="container">
-        <!-- Contenedor donde JavaScript inyectará las joyas -->
         <div id="catalogo" class="catalogo-grid">
-            <p style="text-align: center; grid-column: 1/-1;">Cargando colección...</p>
+            <div class="loading-text">Cargando colección de lujo...</div>
         </div>
     </div>
-
-    <!-- Motor JavaScript para conectar con Google Sheets -->
     <script>
-        // REEMPLAZA ESTE ENLACE con el enlace .csv que copiaste de Google Sheets
-        const URL_CSV = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRsX8vbfKM4vq_c--_FgUCHUe3PNkBLiDhGYqsVW2jKt31MeiQA2VysftzeBbCQnoDjCsMDos7m5453/pub?output=csv";
+        // 1. REEMPLAZA CON TU ENLACE REAL TERMINADO EN pub?output=csv
+        const URL_CSV = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRsX8vbfKM4vq_c--_FgUCHUe3PNkBLiDhGYqsVW2jKt31MeiQA2VysftzeBbCQnoDjCsMDos7m5453/pubhtml";
 
-        async function cargarCatalogo() {
+        // 2. REEMPLAZA CON TU NÚMERO DE WHATSAPP (Código de país + número, sin espacios ni el signo +)
+        const TELEFONO_WHATSAPP = "573205147577"; 
+
+        let todasLasJoyas = [];
+
+        async function cargarDatos() {
             try {
                 const respuesta = await fetch(URL_CSV);
                 const textoCsv = await respuesta.text();
                 
-                // Procesar las filas del CSV
                 const filas = textoCsv.split("\n").map(fila => fila.split(","));
-                const encabezados = filas[0].map(h => h.trim());
+                const encabezados = filas[0].map(h => h.trim().toLowerCase());
                 
-                const contenedor = document.getElementById("catalogo");
-                contenedor.innerHTML = ""; // Limpiar mensaje de carga
+                todasLasJoyas = [];
 
-                // Recorrer los productos (empezando en la fila 1 para saltar el encabezado)
                 for (let i = 1; i < filas.length; i++) {
-                    if (filas[i].length < encabezados.length) continue; // Saltar filas vacías
+                    if (filas[i].length < encabezados.length) continue; 
 
-                    // Emparejar columnas con sus nombres
                     const joya = {};
                     encabezados.forEach((encabezado, index) => {
                         joya[encabezado] = filas[i][index]?.trim();
                     });
 
-                    // Crear la tarjeta visual en HTML
-                    const tarjeta = document.createElement("div");
-                    tarjeta.className = "joya-card";
-
-                    const estadoStock = joya.disponibilidad.toLowerCase() === "si" 
-                        ? `<span>$${joya.precio}</span>` 
-                        : `<span class="agotado">Agotado</span>`;
-
-                    tarjeta.innerHTML = `
-                        <div class="joya-img-container">
-                            <img class="joya-img" src="${joya.imagen}" alt="${joya.nombre}">
-                        </div>
-                        <div class="joya-info">
-                            <div class="joya-categoria">${joya.categoria}</div>
-                            <h2 class="joya-nombre">${joya.nombre}</h2>
-                            <div class="joya-material">Material: ${joya.material}</div>
-                            <div class="joya-precio">
-                                ${estadoStock}
-                            </div>
-                        </div>
-                    `;
-                    contenedor.appendChild(tarjeta);
+                    if (!joya.nombre) continue;
+                    todasLasJoyas.push(joya);
                 }
+                
+                renderizarProductos(todasLasJoyas);
+
             } catch (error) {
-                console.error("Error al cargar los datos:", error);
-                document.getElementById("catalogo").innerHTML = "<p>Error al cargar el catálogo. Inténtalo más tarde.</p>";
+                console.error("Error:", error);
+                document.getElementById("catalogo").innerHTML = "<div class='loading-text'>Error al conectar con el inventario de Google Sheets.</div>";
             }
         }
 
-        // Ejecutar la función automáticamente al cargar la página
-        cargarCatalogo();
+        function renderizarProductos(productos) {
+            const contenedor = document.getElementById("catalogo");
+            contenedor.innerHTML = "";
+
+            if(productos.length === 0) {
+                contenedor.innerHTML = "<div class='loading-text'>No hay piezas disponibles en esta categoría por el momento.</div>";
+                return;
+            }
+
+            productos.forEach(joya => {
+                const tarjeta = document.createElement("div");
+                tarjeta.className = "joya-card";
+
+                let bloqueCompra = "";
+                const estaDisponible = joya.disponibilidad ? joya.disponibilidad.toLowerCase() === "si" : true;
+
+                if (estaDisponible) {
+                    const mensajeWhatsapp = encodeURIComponent(`Hola RAVEN Joyería, me interesa obtener más información sobre: ${joya.nombre} de la sección ${joya.categoria}.`);
+                    const linkWhatsapp = `https://wa.me{TELEFONO_WHATSAPP}?text=${mensajeWhatsapp}`;
+
+                    bloqueCompra = `
+                        <span class="joya-precio">$${joya.precio}</span>
+                        <a href="${linkWhatsapp}" target="_blank" class="btn-whatsapp">
+                            Consultar Pieza
+                        </a>
+                    `;
+                } else {
+                    bloqueCompra = `<div class="agotado-tag">Pieza Agotada</div>`;
+                }
+
+                tarjeta.innerHTML = `
+                    <div class="joya-img-container">
+                        <img class="joya-img" src="${joya.imagen}" alt="${joya.nombre}">
+                    </div>
+                    <div class="joya-info">
+                        <div class="joya-categoria">${joya.categoria}</div>
+                        <h2 class="joya-nombre">${joya.nombre}</h2>
+                        <div class="joya-material">Material: ${joya.material}</div>
+                        <div class="joya-compra-bloque">
+                            ${bloqueCompra}
+                        </div>
+                    </div>
+                `;
+                contenedor.appendChild(tarjeta);
+            });
+        }
+
+        function filtrarCategoria(categoriaSeleccionada) {
+            const botones = document.querySelectorAll('.menu-btn');
+            botones.forEach(btn => btn.classList.remove('active'));
+
+            if (event && event.target) {
+                event.target.classList.add('active');
+            }
+
+            if (categoriaSeleccionada === 'todo') {
+                renderizarProductos(todasLasJoyas);
+            } else {
+                const filtrados = todasLasJoyas.filter(joya => joya.categoria && joya.categoria.toLowerCase() === categoriaSeleccionada.toLowerCase());
+                renderizarProductos(filtrados);
+            }
+        }
+
+        // Inicializar la carga
+        cargarDatos();
     </script>
 </body>
 </html>
-
-
