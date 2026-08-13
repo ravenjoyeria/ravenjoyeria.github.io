@@ -1,1 +1,213 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Catálogo de Joyas de Lujo</title>
+    <!-- Estilos Elegantes -->
+    <style>
+        :root {
+            --color-oro: #d4af37;
+            --color-oscuro: #1a1a1a;
+            --color-gris: #f9f9f9;
+        }
 
+        body {
+            font-family: 'Playfair Display', Georgia, serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--color-gris);
+            color: var(--color-oscuro);
+        }
+
+        header {
+            background-color: var(--color-oscuro);
+            color: white;
+            text-align: center;
+            padding: 2.5rem 1rem;
+            border-bottom: 3px solid var(--color-oro);
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 2.5rem;
+            letter-spacing: 2px;
+        }
+
+        header p {
+            margin: 0.5rem 0 0;
+            font-size: 1rem;
+            color: var(--color-oro);
+            font-style: italic;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        /* Grid del catálogo */
+        .catalogo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        /* Tarjeta de Joya */
+        .joya-card {
+            background: white;
+            border-radius: 4px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            transition: transform 0.3s ease;
+            border: 1px solid #eee;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .joya-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .joya-img-container {
+            width: 100%;
+            height: 300px;
+            overflow: hidden;
+            background-color: #fff;
+        }
+
+        .joya-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .joya-info {
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+
+        .joya-categoria {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #777;
+            margin-bottom: 0.5rem;
+        }
+
+        .joya-nombre {
+            font-size: 1.25rem;
+            margin: 0 0 0.5rem 0;
+            font-weight: 600;
+        }
+
+        .joya-material {
+            font-size: 0.85rem;
+            color: #555;
+            margin-bottom: 1rem;
+            font-style: italic;
+        }
+
+        .joya-precio {
+            font-size: 1.4rem;
+            color: var(--color-oscuro);
+            font-weight: bold;
+            margin-top: auto;
+            border-top: 1px solid #eee;
+            padding-top: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .joya-precio span {
+            color: var(--color-oro);
+        }
+
+        .agotado {
+            font-size: 0.8rem;
+            background: #ffeded;
+            color: #c92a2a;
+            padding: 0.2rem 0.6rem;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Alta Joyería</h1>
+        <p>Catálogo Exclusivo de Piezas Únicas</p>
+    </header>
+
+    <div class="container">
+        <!-- Contenedor donde JavaScript inyectará las joyas -->
+        <div id="catalogo" class="catalogo-grid">
+            <p style="text-align: center; grid-column: 1/-1;">Cargando colección...</p>
+        </div>
+    </div>
+
+    <!-- Motor JavaScript para conectar con Google Sheets -->
+    <script>
+        // REEMPLAZA ESTE ENLACE con el enlace .csv que copiaste de Google Sheets
+        const URL_CSV = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRsX8vbfKM4vq_c--_FgUCHUe3PNkBLiDhGYqsVW2jKt31MeiQA2VysftzeBbCQnoDjCsMDos7m5453/pubhtml";
+
+        async function cargarCatalogo() {
+            try {
+                const respuesta = await fetch(URL_CSV);
+                const textoCsv = await respuesta.text();
+                
+                // Procesar las filas del CSV
+                const filas = textoCsv.split("\n").map(fila => fila.split(","));
+                const encabezados = filas[0].map(h => h.trim());
+                
+                const contenedor = document.getElementById("catalogo");
+                contenedor.innerHTML = ""; // Limpiar mensaje de carga
+
+                // Recorrer los productos (empezando en la fila 1 para saltar el encabezado)
+                for (let i = 1; i < filas.length; i++) {
+                    if (filas[i].length < encabezados.length) continue; // Saltar filas vacías
+
+                    // Emparejar columnas con sus nombres
+                    const joya = {};
+                    encabezados.forEach((encabezado, index) => {
+                        joya[encabezado] = filas[i][index]?.trim();
+                    });
+
+                    // Crear la tarjeta visual en HTML
+                    const tarjeta = document.createElement("div");
+                    tarjeta.className = "joya-card";
+
+                    const estadoStock = joya.disponibilidad.toLowerCase() === "si" 
+                        ? `<span>$${joya.precio}</span>` 
+                        : `<span class="agotado">Agotado</span>`;
+
+                    tarjeta.innerHTML = `
+                        <div class="joya-img-container">
+                            <img class="joya-img" src="${joya.imagen}" alt="${joya.nombre}">
+                        </div>
+                        <div class="joya-info">
+                            <div class="joya-categoria">${joya.categoria}</div>
+                            <h2 class="joya-nombre">${joya.nombre}</h2>
+                            <div class="joya-material">Material: ${joya.material}</div>
+                            <div class="joya-precio">
+                                ${estadoStock}
+                            </div>
+                        </div>
+                    `;
+                    contenedor.appendChild(tarjeta);
+                }
+            } catch (error) {
+                console.error("Error al cargar los datos:", error);
+                document.getElementById("catalogo").innerHTML = "<p>Error al cargar el catálogo. Inténtalo más tarde.</p>";
+            }
+        }
+
+        // Ejecutar la función automáticamente al cargar la página
+        cargarCatalogo();
+    </script>
+</body>
+</html>
